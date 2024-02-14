@@ -1,0 +1,159 @@
+{% extends 'dashboard/home.html' %}
+{% comment %} {% extends 'base2.html' %} {% endcomment %}
+
+
+{% block home_main_content %} 
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Pie Chart</h3>
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="chart">
+                <div class="chartjs-size-monitor">
+                  <div class="chartjs-size-monitor-expand">
+                    <div class=""></div>
+                  </div>
+                  <div class="chartjs-size-monitor-shrink">
+                    <div class=""></div>
+                  </div>
+                </div>
+                <canvas id="pie-chart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 378px;" width="378" height="250" class="chartjs-render-monitor" data-url="{% url 'asset:pie_chart' %}"></canvas>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card card-info">
+            <div class="card-header">
+              <h3 class="card-title">Bar Chart</h3>
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="chart">
+                <div class="chartjs-size-monitor">
+                  <div class="chartjs-size-monitor-expand">
+                    <div class=""></div>
+                  </div>
+                  <div class="chartjs-size-monitor-shrink">
+                    <div class=""></div>
+                  </div>
+                </div>
+                {% comment %} <canvas id="lineChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 378px;" width="378" height="250" class="chartjs-render-monitor"></canvas> {% endcomment %}
+                <canvas id="bar-chart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 378px;" width="378" height="250" class="chartjs-render-monitor" data-url="{% url 'asset:bar-chart' %}"></canvas>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+
+{% endblock  %}
+
+{% block js_block %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+    <script>
+
+        $(function () {
+    
+          var $populationChart = $("#pie-chart");
+          $.ajax({
+            url: $populationChart.data("url"),
+            success: function (data) {
+    
+            var ctx = $populationChart[0].getContext("2d");
+            
+            new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                data: data.data,
+                backgroundColor: [
+                    'red',
+                    'blue',
+                    'green',
+                    'yellow',
+                    'magenta'
+                ]
+                }]
+            },
+            options: {
+                responsive: true,
+                title: {
+                display: true,
+                text: 'Pie Chart'
+                }
+            }
+            });
+    
+            }
+          });
+    
+        });
+    
+    </script>
+
+    <script>
+        $(function () {
+          var $barChart = $("#bar-chart");
+          $.ajax({
+            url: $barChart.data("url"),
+            success: function (data) {
+              var ctx = $barChart[0].getContext("2d");
+              new Chart(ctx, {
+                type: 'bar',
+                data: {
+                  labels: data.labels,
+                  datasets: [
+                    {
+                      label: 'Active',
+                      backgroundColor: 'blue',
+                      data: data.active_data
+                    },
+                    {
+                      label: 'Inactive',
+                      backgroundColor: 'red',
+                      data: data.inactive_data
+                    }
+                  ]
+                },
+                options: {
+                  responsive: true,
+                  legend: {
+                    position: 'top',
+                  },
+                  title: {
+                    display: true,
+                    text: 'Bar Chart with Active and Inactive Categories'
+                  }
+                }
+              });
+            }
+          });
+        });
+      </script>
+    
+{% endblock %}

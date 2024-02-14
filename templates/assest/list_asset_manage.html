@@ -1,0 +1,107 @@
+
+{% extends 'dashboard/home.html' %}
+
+{% block home_main_content %} 
+
+<div class="row">
+    <div class="col-12">
+      <div class="card">
+        {% comment %} <div class="card-header">
+            <h3 class="card-title">DataTable</h3>
+        </div>         {% endcomment %}
+
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div>
+                <h3 class="card-title m-0">DataTable</h3>
+            </div>
+            <div style="position: absolute; top: 0; right: 0;">
+                {% comment %} <button class="btn btn-primary">Download</button> {% endcomment %}
+                <button type="button" class="btn btn-primary"><a style="color: white;" href="{% url 'asset:generate_csv'%}">Download</a></button>
+            </div>
+        </div>
+        
+        <div class="card-body">
+          <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+            <div class="row">
+              <div class="col-sm-12 col-md-6"></div>
+              <div class="col-sm-12 col-md-6"></div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
+                  <thead>
+                    <tr>
+                      <th class="sorting sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">Name</th>
+                      <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Type</th>
+                      <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">UUID Code</th>
+                      <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Is Active</th>
+                      <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Created Date</th>
+                      <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">Updated Date</th>
+                    </tr>
+                  </thead>
+                  {% for obj in page_obj %}
+                    <tbody>
+                     
+                        <tr class="odd">
+                        <td class="dtr-control sorting_1" tabindex="0"> <a href="{% url 'asset:record_manage_details' obj.id %}">{{ obj.asset_name }}</a> 
+                        </td>
+                        <td>{{ obj.asset_catg }}</td>
+                        <td>{{ obj.asset_code }}</td>
+                        <td>{{ obj.is_active }}</td>
+                        <td>{{ obj.created_on }}</td>
+                        <td>{{ obj.updated_on }}</td>
+                        </tr>
+                    </tbody>
+                  {% endfor %}
+                  <tfoot>
+                    <tr>
+                      <th rowspan="1" colspan="1">Name</th>
+                      <th rowspan="1" colspan="1">Type</th>
+                      <th rowspan="1" colspan="1">UUID Code</th>
+                      <th rowspan="1" colspan="1">Is Active</th>
+                      <th rowspan="1" colspan="1">Created Date</th>
+                      <th rowspan="1" colspan="1">Updated Date</th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+            <!-- pagination -->
+              <div class="row">
+                <div class="col-sm-12 col-md-7">
+                  <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+                    <ul class="pagination">
+                      {% if page_obj.has_previous %}
+                      <li class="paginate_button page-item previous" id="example1_previous">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                      </li>
+                      {% else %}
+                      <li class="paginate_button page-item previous disabled" id="example1_previous">
+                        <a class="page-link" href="#">Previous</a>
+                      </li>
+                      {% endif %}
+                      {% for i in page_obj.paginator.page_range %}
+                      <li class=" paginate_button page-item active {% if page_obj.number == i %}active{% endif %}">
+                          <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                      </li>
+                      {% endfor %}
+                      {% if page_obj.has_next %}
+                        <li class="paginate_button page-item next" id="example1_next">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                        </li>
+                      {% else %}
+                        <li cclass="paginate_button page-item next disabled" id="example1_next">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                      {% endif %}          
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            <!-- end of pagination-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %} 

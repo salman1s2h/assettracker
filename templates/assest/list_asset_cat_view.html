@@ -1,0 +1,176 @@
+{% extends 'dashboard/home.html' %}
+
+{% block home_main_content2 %} 
+
+    {% comment %} {% for data in dataset %}.
+    
+    {{ data.title }}<br/>
+    {{ data.description }}<br/>
+    <hr/>
+
+    {% endfor %} {% endcomment %}
+
+    {% for obj in page_obj %}
+    <!-- Display object data -->
+        {{ obj.asset_cat }}<br/>
+        {{ obj.asset_discription }}<br/>
+        <hr/>
+    {% endfor %}
+
+    <!-- Pagination controls -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+        </span>
+    
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+    
+        <form action="" method="get" class="page-selector">
+            <select name="page">
+                {% for num in page_obj.paginator.page_range %}
+                    <option value="{{ num }}" {% if num == page_obj.number %}selected{% endif %}>{{ num }}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Go">
+        </form>
+    
+        <span class="step-links">
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
+{% endblock %}
+
+
+{% block home_main_content %} 
+
+<div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">DataTable with minimal features &amp; hover style</h3>
+        </div>
+        <div class="card-body">
+          <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+            <div class="row">
+              <div class="col-sm-12 col-md-6"></div>
+              <div class="col-sm-12 col-md-6"></div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
+                  <thead>
+                    <tr>
+                      <th class="sorting sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">Assest Name</th>
+                      <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Discription</th>
+                      <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Created Date</th>
+                      <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">Updated Date</th>
+                    </tr>
+                  </thead>
+                  {% for obj in page_obj %}
+                    <tbody>
+                     
+                        <tr class="odd">
+                        <td class="dtr-control sorting_1" tabindex="0"> <a href="{% url 'asset:record_details' obj.id %}">{{ obj.asset_cat }}                      </a> 
+                        </td>
+                        <td>{{ obj.asset_discription|truncatechars:50 }}</td>
+                        <td>{{ obj.created_on }}</td>
+                        <td>{{ obj.updated_on }}</td>
+                        </tr>
+                    </tbody>
+                  {% endfor %}
+                  <tfoot>
+                    <tr>
+                      <th rowspan="1" colspan="1">Assest Name</th>
+                      <th rowspan="1" colspan="1">Discription</th>
+                      <th rowspan="1" colspan="1">Created Date</th>
+                      <th rowspan="1" colspan="1">Updated Date</th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+            <!-- pagination -->
+            {% comment %} <div class="row">
+                <nav class="col-lg-6 offset-lg-3 mt-4 d-flex justify-content-center">
+                  <ul class="pagination">
+            
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                      <a class="page-link" href="#">Previous</a>
+                    </li>
+                    {% endif %}
+              
+                    {% for i in page_obj.paginator.page_range %}
+                    <li class=" page-item {% if page_obj.number == i %}active{% endif %}">
+                        <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                    </li>
+                    {% endfor %}
+            
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                      <a class="page-link" href="#">Next</a>
+                    </li>
+                    {% endif %}
+                  </ul>
+                </nav>
+              </div> {% endcomment %}
+
+              <div class="row">
+                <div class="col-sm-12 col-md-7">
+                  <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+                    <ul class="pagination">
+                      {% if page_obj.has_previous %}
+                      <li class="paginate_button page-item previous" id="example1_previous">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                      </li>
+                      {% else %}
+                      <li class="paginate_button page-item previous disabled" id="example1_previous">
+                        <a class="page-link" href="#">Previous</a>
+                      </li>
+                      {% endif %}
+                      {% for i in page_obj.paginator.page_range %}
+                      <li class=" paginate_button page-item active {% if page_obj.number == i %}active{% endif %}">
+                          <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                      </li>
+                      {% endfor %}
+                      {% if page_obj.has_next %}
+                        <li class="paginate_button page-item next" id="example1_next">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                        </li>
+                      {% else %}
+                        <li cclass="paginate_button page-item next disabled" id="example1_next">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                      {% endif %}          
+            
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+
+
+            <!-- end of pagination-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %} 

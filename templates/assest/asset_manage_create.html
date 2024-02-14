@@ -1,0 +1,59 @@
+{% extends 'dashboard/home.html' %}
+
+{% block home_main_content %} 
+
+    <div class="card card-info">
+        <div class="card-header">
+            <h3 class="card-title">Asset Managemet</h3>
+        </div>
+        <div class="card-body">
+            <h2 class="my-5">{% if update %}Update Assets{% else %}Create a Assets{% endif %}</h2>
+            <form method="POST" enctype="multipart/form-data" class="assest-cat-type">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Assest Name</label>
+                    <input type="text" class="form-control my-colorpicker1 colorpicker-element {% if form.asset_name.errors %}is-invalid{% endif %}"
+                         data-colorpicker-id="1" name="asset_name" value='{{ form.asset_name.value|default:"" }}' id="id_asset_name">
+                </div>
+
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Asset Type</label>
+                      <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true" name="asset_catg" id="id_asset_catg" >
+                        {% for assest in asset_type %}
+                            <option value="{{ assest.id }}" >{{assest.asset_cat}}</option>
+                        {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="checkbox">
+                    <label><input type="checkbox" name="is_active" id="id_is_active" {% if form.is_active.value %} checked {% endif %} >Is Active</label>
+                </div>
+
+                <button class="btn btn-primary ml-2" type="submit">{% if update %}Update{% else %}Save{% endif %}</button>
+                {% if update %}<button type="button" id='delete-btn' class="btn btn-danger"><a style="color: white;" href="{% url 'asset:delete_asst_mang_new' obj_id.id %}">Delete</a></button>
+                {% endif %}
+             </form>
+        </div>
+    </div> 
+{% endblock  %}
+
+{% block js_block %} 
+    <script>
+        document.getElementById('delete-btn').addEventListener('click', function(event) {
+            // Prevent the default behavior of the link
+            event.preventDefault();
+            
+            // Display an alert message
+            var confirmation = confirm('Are you sure you want to delete this object?');
+            
+            // If user confirms deletion, proceed with the link action
+            if (confirmation) {
+                window.location.href = this.querySelector('a').href;
+            }
+        });
+    </script>
+{% endblock %}
+
