@@ -6,7 +6,7 @@ cmd :source venv/bin/activate
 Then insatll all python package by bellow command
 cmd : pip install -r requirements.txt
 Create .env file and create variable which are we using in setting.py like DATABASE_NAME,DATABASE_USER,DATABASE_PASSWORD etc..
-I am using postgres DATABASE and my look like bellow 
+I am using postgres DATABASE and it look like bellow 
 'default': {
          'ENGINE': 'django.db.backends.postgresql',
          'NAME': os.getenv('DATABASE_NAME'),
