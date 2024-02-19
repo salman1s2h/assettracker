@@ -114,11 +114,11 @@
               <li class="nav-item">
                 <a href="{% url "asset:lst_ast_manage" %}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Assest Managemet</p>
+                  <p>Assest Managemet Table</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/tables/jsgrid.html" class="nav-link">
+                <a href="{% url "asset:add_images" %}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Image(Upcomming)</p>
                 </a>
@@ -140,12 +140,6 @@
         <div class="row mb-2">
           <div class="col-sm-6">
             <h1 class="m-0">Dashboard</h1>
-          </div><!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard</li>
-            </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->

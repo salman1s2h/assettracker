@@ -25,9 +25,7 @@ def signup(request):
 
 
 def log_in(request):
-    if request.user.is_authenticated:
-        return redirect('dashboard:home_pi')
-    
+
     if request.method == "POST":
         form = LoginForm(request.POST)
 
@@ -41,13 +39,18 @@ def log_in(request):
             if user:
                 login(request, user)  
                 if remember_me:
-                    # Set session expiry to a longer time (e.g., 2 weeks)
-                    request.session.set_expiry(60 * 60 * 24 * 14)  # 2 weeks in seconds
+                    request.session.set_expiry(50)
+                else:
+                    request.session.set_expiry(0) 
+
                 return redirect('dashboard:home_pi')
             else:  
                 messages.error(request, 'Invalid email or password')
   
     else:
+        if request.user.is_authenticated:
+            return redirect('dashboard:home_pi')
+                    
         form = LoginForm()
 
     return render(request, 'authentication/login.html', {'form': form})

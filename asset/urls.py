@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import (create_asset_cat,list_asset_cat,list_asset_manage,retrive_asset_manage,generate_csv,
+from .views import (create_asset_cat,list_asset_cat,list_asset_manage,retrive_asset_manage,generate_csv,add_image_asset,
                    pie_chart,retrive_asset_catg,delete_asst_cat,create_asset_manage,delete_asst_mang_new,bar_chart_view)
 app_name ="asset"
 
@@ -16,5 +16,6 @@ urlpatterns = [
     path('pie-chart/', pie_chart, name='pie_chart'),
     path('bar-chart/', bar_chart_view, name='bar-chart'),
     path('delete-new/<int:pk>/', delete_asst_mang_new, name='delete_asst_mang_new'),
+    path('asset-images/',add_image_asset,name='add_images')
 
 ]

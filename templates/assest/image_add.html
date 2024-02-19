@@ -1,0 +1,52 @@
+{% extends 'dashboard/home.html' %}
+
+{% block home_main_content %} 
+
+{% comment %} <form method="post" enctype="multipart/form-data">  
+    {% csrf_token %}  
+    {{ form.as_p }}  
+    <button type="submit">Upload</button>  
+</form>   {% endcomment %}
+<div class="card card-info">
+    <div class="card-header">
+        <h3 class="card-title">ASSET IMAGE</h3>
+    </div>
+    <div class="card-body">
+        <h2 class="my-5">Upload Image</h2>
+        <form method="POST" enctype="multipart/form-data" class="assest-cat-type">
+            {% csrf_token %}
+            {% comment %} <div class="form-group">
+                <label>Asset Image</label>
+                <input type="file" class="form-control my-colorpicker1 colorpicker-element {% if form.asset_name.errors %}is-invalid{% endif %}"
+                     data-colorpicker-id="1" name="asset_name" value='{{ form.asset_name.value|default:"" }}' id="id_asset_name">
+            </div> {% endcomment %}
+
+            <div class="mb-6">
+                <label for="id_image" class="form-label">Image</label>
+                <input class="form-control" type="file" id="id_image" name="image" multiple>
+            </div>
+
+
+            <div class="col-md-6">
+                <div class="form-group">
+                  <label>Select Asset</label>
+                  <select class="form-control select2 select2-hidden-accessible" id="user_select_img" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true" name="main_model" id="id_asset_catg" >
+                    {% for record in asset %}
+                        <option value="{{ record.id }}" >{{record.asset_name}}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <button class="btn btn-primary ml-2" type="submit">Upload</button>
+            <button type="button" name="cancel" class="btn btn-secondary"><a style="color: white;" href="{% url "asset:lst_ast_manage" %}" id="img_anchor_id">Cancel</a></button>
+
+         </form>
+    </div>
+</div> 
+
+{% endblock  %}
+
+{%  block js_block %}
+
+
+{% endblock %}

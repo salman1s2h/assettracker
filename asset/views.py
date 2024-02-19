@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import AssetCatg,AssetManage
-from .forms import AsstCatgForm,AssetManageForm
+from .forms import AsstCatgForm,AssetManageForm,ImageForm
 from django.core.paginator import Paginator
 import csv
 from django.http import HttpResponse
@@ -104,8 +104,9 @@ def retrive_asset_manage(request,pk):
             return redirect('dashboard:home_pi')  # Redirect to success page
     else:
         form = AssetManageForm(instance=instance)
+        images = instance.images.all()
         asset_type = AssetCatg.objects.all()
-    return render(request, 'assest/asset_manage_create.html', {'form':form ,'update': update,'asset_type':asset_type,'obj_id':instance})
+    return render(request, 'assest/asset_manage_create.html', {'form':form ,'update': update,'asset_type':asset_type,'obj_id':instance,'images':images})
 
 
 # @login_required
@@ -185,3 +186,20 @@ def bar_chart_view(request):
         'inactive_data': inactive_data
     }
     return JsonResponse(bar_data)
+
+
+@login_required
+def add_image_asset(request):
+    if request.method == 'POST':  
+        form = ImageForm(request.POST, request.FILES)  
+        if form.is_valid():  
+            form.save()  
+  
+            img_object = form.instance  
+            return render(request, 'assest/image_add.html', {'form': form, 'img_obj': img_object})  
+    else:  
+        form = ImageForm()
+
+    asset_data = AssetManage.objects.all()
+
+    return render(request, 'assest/image_add.html', {'form': form,'asset':asset_data})  
