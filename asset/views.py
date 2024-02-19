@@ -190,16 +190,16 @@ def bar_chart_view(request):
 
 @login_required
 def add_image_asset(request):
+    asset_data = AssetManage.objects.all()
     if request.method == 'POST':  
         form = ImageForm(request.POST, request.FILES)  
-        if form.is_valid():  
+        if form.is_valid():
+            # asset_manage_id = form.cleaned_data['']
             form.save()  
   
             img_object = form.instance  
-            return render(request, 'assest/image_add.html', {'form': form, 'img_obj': img_object})  
+            return render(request, 'assest/image_add.html', {'form': form, 'img_obj': img_object,'asset':asset_data})  
     else:  
         form = ImageForm()
-
-    asset_data = AssetManage.objects.all()
 
     return render(request, 'assest/image_add.html', {'form': form,'asset':asset_data})  
