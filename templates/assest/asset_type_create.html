@@ -1,0 +1,65 @@
+{% extends 'dashboard/home.html' %}
+
+{% block home_main_content %} 
+
+    <div class="card card-info">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-warning" role="alert">
+                        {{ message.tags }} : {{ message }}
+                    </div>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <div class="card-header">
+            <h3 class="card-title">Asset Type</h3>
+        </div>
+        <div class="card-body">
+            <h2 class="my-5">{% if update %}Details and Update{% else %}Create a Type{% endif %}</h2>
+            <form method="POST" enctype="multipart/form-data" class="assest-cat-type">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Asset Type Name</label>
+                    <input type="text" class="form-control my-colorpicker1 colorpicker-element {% if form.email.errors %}is-invalid{% endif %}"
+                         data-colorpicker-id="1" name="asset_cat" value='{{ form.asset_cat.value|default:"" }}' id="id_asset_cat">
+                </div>
+            
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                        <label>Discription</label>
+                            <textarea class="form-control" rows="3"  id="id_asset_discription" cols="40" rows="10"
+                                name="asset_discription" value='{{ form.asset_discription.value|default:"" }}'>{% if update %}{{ form.asset_discription.value }}{% endif%}</textarea>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary ml-2" type="submit">{% if update %}Update{% else %}Save{% endif %}</button>
+                {% if update %}<button type="button" id='delete-btn-type' class="btn btn-danger"><a style="color: white;" href="{% url 'asset:delete_asst_cat' obj_id %}">Delete</a></button>
+                <button type="button" class="btn btn-secondary"><a style="color: white;" href="{% url "asset:lst_ast_catg" %}">Cancel</a></button>
+                {% else %}
+                <button type="button" class="btn btn-secondary"><a style="color: white;" href="{% url "dashboard:home_pi" %}">Cancel</a></button>
+                {% endif %}
+            </form>
+        </div>
+    </div> 
+{% endblock  %}
+
+{% block js_block %} 
+    <script>
+        document.getElementById('delete-btn-type').addEventListener('click', function(event) {
+            // Prevent the default behavior of the link
+            event.preventDefault();
+            
+            // Display an alert message
+            var confirmation = confirm("Are you sure? If you delete this asset type, all assets under this asset type will be deleted too!");
+            
+            // If user confirms deletion, proceed with the link action
+            if (confirmation) {
+                window.location.href = this.querySelector('a').href;
+            }
+        });
+    </script>
+{% endblock %}
+

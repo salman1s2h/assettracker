@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-
+from django.urls import reverse_lazy
 
 load_dotenv()
 
@@ -153,3 +153,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
+
+# LOGIN_REDIRECT_URL = reverse_lazy('login')
+# LOGIN_URL = reverse_lazy('login')
+
+TIME_ZONE =  'Asia/Kolkata'

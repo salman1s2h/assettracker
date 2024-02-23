@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.urls import reverse
 
 
-
+##NOTE not used
 def signup(request):
     if request.user.is_authenticated:
         return redirect('dashboard:home_pi')
@@ -39,7 +39,7 @@ def log_in(request):
             if user:
                 login(request, user)  
                 if remember_me:
-                    request.session.set_expiry(50)
+                    request.session.set_expiry(5000)
                 else:
                     request.session.set_expiry(0) 
 
@@ -52,7 +52,6 @@ def log_in(request):
             return redirect('dashboard:home_pi')
                     
         form = LoginForm()
-
     return render(request, 'authentication/login.html', {'form': form})
 
 def log_out(request):

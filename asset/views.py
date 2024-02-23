@@ -10,10 +10,9 @@ from django.http import JsonResponse
 from django.contrib import messages
 
 
-
+## Bellow function are used for creating asset 
 @login_required
 def create_asset_cat(request):
-    context ={}
     form = AsstCatgForm(request.POST or None)
     if form.is_valid():
         form.save()
@@ -22,39 +21,39 @@ def create_asset_cat(request):
         err = form.errors
         messages.warning(request, err)
     
-    context['form']= form
-    return render(request, "assest/tag_create.html", context)
+    return render(request, "assest/asset_type_create.html")
 
 
+## Bellow function are used for datatable with paggination
 @login_required
 def list_asset_cat(request):
-
-    paginator = Paginator(AssetCatg.objects.all(), 2)  # Show 1 objects per page
+    paginator = Paginator(AssetCatg.objects.all(), 2)  # Show 2 objects per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, "assest/list_asset_cat_view.html", {'page_obj': page_obj})
 
+## Bellow function are used for retrive and update the asset type
 @login_required
-def retrive_asset_catg(request,pk):
-    
-    if pk:
+def retrive_update_asset_type(request,pk):
+    if pk: # it call while retrive
         instance = get_object_or_404(AssetCatg, pk=pk)
         update = True
     else:
         instance = None
         update = False
 
-    if request.method == 'POST':
+    if request.method == 'POST': # this is call when user click update button
         form = AsstCatgForm(request.POST, instance=instance)
         if form.is_valid():
             form.save()
-            return redirect('dashboard:home_pi')  # Redirect to success page
+            return redirect('dashboard:home_pi') 
     else:
         form = AsstCatgForm(instance=instance)
-    return render(request, 'assest/tag_create.html', {'form': form, 'update': update,'obj_id':instance.id})
+    return render(request, 'assest/asset_type_create.html', {'form': form, 'update': update,'obj_id':instance.id})
 
+## delete  the ass
 @login_required
-def delete_asst_cat(request,pk):
+def delete_asst_type(request,pk):
 
     obj = get_object_or_404(AssetCatg, pk=pk)
     if obj:
@@ -63,14 +62,13 @@ def delete_asst_cat(request,pk):
 
 
 
+## Bellow function is used for asset management
 @login_required
 def create_asset_manage(request):
     
     if request.method == 'POST':
-        context = {}
         form = AssetManageForm(request.POST or None)
         if form.is_valid():
-            is_active = form.cleaned_data['is_active']
             form.save()
             return redirect('dashboard:home_pi')
     else:
@@ -78,7 +76,7 @@ def create_asset_manage(request):
         asset_type = AssetCatg.objects.all()
         return render(request, 'assest/asset_manage_create.html', {'form': form,'asset_type':asset_type})
 
-
+## datatable for asset management 
 @login_required
 def list_asset_manage(request):
 
@@ -87,21 +85,22 @@ def list_asset_manage(request):
     page_obj = paginator.get_page(page_number)
     return render(request, "assest/list_asset_manage.html", {'page_obj': page_obj})
 
+## bellow function for update and retrive data
 @login_required
-def retrive_asset_manage(request,pk):
+def retrive_update_asset_manage(request,pk):
 
-    if pk:
+    if pk: ## Called fro datatable
         instance = get_object_or_404(AssetManage, pk=pk)
         update = True
     else:
         instance = None
         update = False
 
-    if request.method == 'POST':
+    if request.method == 'POST': ## called while update
         form = AssetManageForm(request.POST, instance=instance)
         if form.is_valid():
             form.save()
-            return redirect('dashboard:home_pi')  # Redirect to success page
+            return redirect('dashboard:home_pi') 
     else:
         form = AssetManageForm(instance=instance)
         images = instance.images.all()
@@ -109,13 +108,8 @@ def retrive_asset_manage(request,pk):
     return render(request, 'assest/asset_manage_create.html', {'form':form ,'update': update,'asset_type':asset_type,'obj_id':instance,'images':images})
 
 
-# @login_required
-# def delete_asst_mang(request,pk):
-#     obj = get_object_or_404(AssetManage, pk=pk)
-#     if obj:
-#         obj.delete()
-#     return redirect('dashboard:home_pi')
 
+## deleting the asset management
 @login_required
 def delete_asst_mang_new(request,pk):
     obj = get_object_or_404(AssetManage, pk=pk)
@@ -194,7 +188,6 @@ def add_image_asset(request):
     if request.method == 'POST':  
         form = ImageForm(request.POST, request.FILES)  
         if form.is_valid():
-            # asset_manage_id = form.cleaned_data['']
             form.save()  
   
             img_object = form.instance  

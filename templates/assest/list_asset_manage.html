@@ -81,7 +81,7 @@
                       </li>
                       {% endif %}
                       {% for i in page_obj.paginator.page_range %}
-                      <li class=" paginate_button page-item active {% if page_obj.number == i %}active{% endif %}">
+                      <li class=" paginate_button page-item {% if page_obj.number == i %}active{% endif %}">
                           <a class="page-link" href="?page={{ i }}">{{ i }}</a>
                       </li>
                       {% endfor %}

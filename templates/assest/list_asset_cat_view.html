@@ -1,53 +1,5 @@
 {% extends 'dashboard/home.html' %}
 
-{% block home_main_content2 %} 
-
-    {% comment %} {% for data in dataset %}.
-    
-    {{ data.title }}<br/>
-    {{ data.description }}<br/>
-    <hr/>
-
-    {% endfor %} {% endcomment %}
-
-    {% for obj in page_obj %}
-    <!-- Display object data -->
-        {{ obj.asset_cat }}<br/>
-        {{ obj.asset_discription }}<br/>
-        <hr/>
-    {% endfor %}
-
-    <!-- Pagination controls -->
-    <div class="pagination">
-        <span class="step-links">
-            {% if page_obj.has_previous %}
-                <a href="?page=1">&laquo; first</a>
-                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-            {% endif %}
-        </span>
-    
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
-    
-        <form action="" method="get" class="page-selector">
-            <select name="page">
-                {% for num in page_obj.paginator.page_range %}
-                    <option value="{{ num }}" {% if num == page_obj.number %}selected{% endif %}>{{ num }}</option>
-                {% endfor %}
-            </select>
-            <input type="submit" value="Go">
-        </form>
-    
-        <span class="step-links">
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}">next</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-            {% endif %}
-        </span>
-    </div>
-
-{% endblock %}
 
 
 {% block home_main_content %} 
@@ -146,7 +98,7 @@
                       </li>
                       {% endif %}
                       {% for i in page_obj.paginator.page_range %}
-                      <li class=" paginate_button page-item active {% if page_obj.number == i %}active{% endif %}">
+                      <li class=" paginate_button page-item {% if page_obj.number == i %}active{% endif %}">
                           <a class="page-link" href="?page={{ i }}">{{ i }}</a>
                       </li>
                       {% endfor %}
